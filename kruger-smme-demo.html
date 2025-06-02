@@ -24,7 +24,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
             color: var(--wef-navy);
             background: linear-gradient(135deg, var(--wef-gray) 0%, var(--wef-white) 100%);
@@ -54,7 +54,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-image: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.1) 2px, transparent 2px),
+                              radial-gradient(circle at 80% 40%, rgba(255,255,255,0.08) 1.5px, transparent 1.5px),
+                              radial-gradient(circle at 40% 80%, rgba(255,255,255,0.06) 1px, transparent 1px);
+            background-size: 100px 100px, 150px 150px, 80px 80px;
             animation: float 20s ease-in-out infinite;
         }
 
@@ -75,6 +78,7 @@
         .chokepoint-ticker {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: 20px 30px;
             border-radius: 50px;
             margin: 30px auto;
@@ -223,6 +227,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -246,6 +251,8 @@
             position: relative;
             transform: scale(0.8);
             transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .demo-modal.show .modal-content {
@@ -260,6 +267,12 @@
             cursor: pointer;
             color: var(--wef-dark-gray);
             transition: color 0.3s ease;
+            line-height: 1;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .close:hover {
@@ -279,6 +292,7 @@
             border-radius: 10px;
             font-size: 1rem;
             transition: border-color 0.3s ease;
+            font-family: inherit;
         }
 
         select:focus, input:focus {
@@ -296,6 +310,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: background 0.3s ease;
+            font-family: inherit;
         }
 
         button[type="submit"]:hover {
@@ -326,6 +341,7 @@
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-family: inherit;
         }
 
         .how-btn:hover {
@@ -344,6 +360,8 @@
             padding: 20px;
             border-radius: 15px 15px 0 0;
             min-height: 300px;
+            max-height: 400px;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -354,6 +372,7 @@
             border-radius: 15px;
             max-width: 80%;
             word-wrap: break-word;
+            font-size: 14px;
         }
 
         .message.received {
@@ -373,6 +392,7 @@
             background: white;
             padding: 10px;
             border-radius: 0 0 15px 15px;
+            gap: 10px;
         }
 
         .whatsapp-input input {
@@ -381,7 +401,7 @@
             padding: 10px;
             border-radius: 20px;
             background: #f0f0f0;
-            margin-right: 10px;
+            font-size: 14px;
         }
 
         .whatsapp-input button {
@@ -391,6 +411,7 @@
             padding: 10px 20px;
             border-radius: 20px;
             cursor: pointer;
+            font-family: inherit;
         }
 
         /* Survey Section */
@@ -417,7 +438,7 @@
 
         /* Utility Classes */
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         .fade-in {
@@ -443,6 +464,28 @@
                 padding: 30px 20px;
                 margin: 20px;
             }
+
+            .solution-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .chokepoint-ticker span {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .solutions-container h2 {
+                font-size: 2rem;
+            }
+            
+            .survey-container h2 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -452,7 +495,7 @@
         <div class="container">
             <h1>80% of Kruger SMMEs Fail Within 3 Years</h1>
             <div class="chokepoint-ticker">
-                <span id="loan-rejections">4,920</span> loan rejections this month
+                <span id="loan-rejections">0</span> loan rejections this month
             </div>
             <button class="explore-btn" id="explore-btn">Explore Solutions</button>
         </div>
@@ -512,7 +555,7 @@
                     <div class="message received">Balance: R2,450 | Last sale: R500 (Safari tour)</div>
                 </div>
                 <div class="whatsapp-input">
-                    <input type="text" id="whatsapp-input" placeholder="Type message...">
+                    <input type="text" id="whatsapp-input" placeholder="Type message..." autocomplete="off">
                     <button id="whatsapp-send">Send</button>
                 </div>
             </div>
@@ -543,189 +586,232 @@
     </div>
 
     <script>
-        // Counter animation
-        function animateCounter() {
-            const counter = document.getElementById('loan-rejections');
-            const target = 4920;
-            let current = 0;
-            const increment = target / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
-                counter.textContent = Math.floor(current).toLocaleString();
-            }, 20);
-        }
-
-        // Initialize counter animation
-        animateCounter();
-
-        // Explore button functionality
-        document.getElementById('explore-btn').addEventListener('click', function() {
-            const solutionsContainer = document.getElementById('solutions-container');
-            solutionsContainer.classList.remove('hidden');
-            solutionsContainer.classList.add('fade-in');
-            solutionsContainer.scrollIntoView({ behavior: 'smooth' });
-            
-            // Show survey section after a delay
-            setTimeout(() => {
-                const surveyContainer = document.getElementById('survey-container');
-                surveyContainer.classList.remove('hidden');
-                surveyContainer.classList.add('fade-in');
-            }, 1000);
-        });
-
-        // Modal functionality
-        const modals = document.querySelectorAll('.demo-modal');
-        const demoButtons = document.querySelectorAll('.demo-btn');
-        const closeButtons = document.querySelectorAll('.close');
-
-        demoButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const card = this.closest('.card');
-                const solution = card.dataset.solution;
-                const modal = document.getElementById(`${solution}-demo`);
-                modal.classList.add('show');
-            });
-        });
-
-        closeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const modal = this.closest('.demo-modal');
-                modal.classList.remove('show');
-            });
-        });
-
-        // Close modal on outside click
-        modals.forEach(modal => {
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.classList.remove('show');
-                }
-            });
-        });
-
-        // Credit form functionality
-        document.getElementById('credit-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const businessType = document.getElementById('business-type').value;
-            const revenue = parseInt(document.getElementById('revenue').value);
-            const employees = parseInt(document.getElementById('employees').value);
-            
-            // Simple credit scoring logic
-            let loanAmount = Math.min(revenue * 3, 50000);
-            let interestRate = 14;
-            
-            if (businessType === 'tourism') {
-                loanAmount *= 1.2;
-                interestRate -= 1;
-            } else if (businessType === 'craft') {
-                loanAmount *= 1.1;
-            }
-            
-            if (employees > 2) {
-                loanAmount *= 1.15;
-                interestRate -= 0.5;
-            }
-            
-            document.getElementById('loan-amount').textContent = `R${Math.floor(loanAmount).toLocaleString()}`;
-            document.getElementById('loan-rate').textContent = `${interestRate.toFixed(1)}%`;
-            document.getElementById('credit-result').classList.remove('hidden');
-        });
-
-        // How we decided button
-        document.getElementById('how-btn').addEventListener('click', function() {
-            alert('Our AI considers: Business type, revenue stability, growth potential, local market conditions, and social impact factors. Traditional banks only look at collateral and credit history.');
-        });
-
-        // WhatsApp demo functionality
-        document.getElementById('whatsapp-send').addEventListener('click', function() {
-            const input = document.getElementById('whatsapp-input');
-            const message = input.value.trim().toUpperCase();
-            const screen = document.getElementById('whatsapp-screen');
-            
-            if (message) {
-                // Add user message
-                const userMsg = document.createElement('div');
-                userMsg.className = 'message sent';
-                userMsg.textContent = message;
-                screen.appendChild(userMsg);
-                
-                // Add bot response
-                setTimeout(() => {
-                    const botMsg = document.createElement('div');
-                    botMsg.className = 'message received';
-                    
-                    if (message.includes('LOAN')) {
-                        botMsg.textContent = 'You qualify for R8,500 loan at 16% APR. Reply YES to apply.';
-                    } else if (message.includes('RECEIPT')) {
-                        const amount = message.match(/\d+/);
-                        if (amount) {
-                            botMsg.textContent = `Receipt recorded: R${amount[0]}. New balance: R${2450 + parseInt(amount[0])}`;
-                        } else {
-                            botMsg.textContent = 'Please specify amount: RECEIPT [amount]';
-                        }
-                    } else if (message.includes('BALANCE')) {
-                        botMsg.textContent = 'Balance: R2,450 | Weekly sales: R3,200 | Growth: +15%';
-                    } else {
-                        botMsg.textContent = 'Available commands: BALANCE, LOAN, RECEIPT [amount]';
-                    }
-                    
-                    screen.appendChild(botMsg);
-                    screen.scrollTop = screen.scrollHeight;
-                }, 500);
-                
-                input.value = '';
-                screen.scrollTop = screen.scrollHeight;
-            }
-        });
-
-        // Enter key for WhatsApp input
-        document.getElementById('whatsapp-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('whatsapp-send').click();
-            }
-        });
-
-        // Survey form functionality
-        document.getElementById('pilot-survey').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const businessType = document.getElementById('survey-business-type').value;
-            const whatsappNumber = document.getElementById('whatsapp-number').value;
-            const email = document.getElementById('email').value;
-            
-            // Simulate form submission
-            setTimeout(() => {
-                document.getElementById('pilot-survey').classList.add('hidden');
-                document.getElementById('survey-thankyou').classList.remove('hidden');
-                document.getElementById('survey-thankyou').classList.add('fade-in');
-            }, 500);
-        });
-
-        // Add some dynamic effects
+        // Wait for DOM to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
-            // Animate cards on scroll
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('fade-in');
+            // Counter animation
+            function animateCounter() {
+                const counter = document.getElementById('loan-rejections');
+                if (!counter) return;
+                
+                const target = 4920;
+                let current = 0;
+                const increment = target / 100;
+                const timer = setInterval(function() {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    counter.textContent = Math.floor(current).toLocaleString();
+                }, 20);
+            }
+
+            // Initialize counter animation
+            animateCounter();
+
+            // Explore button functionality
+            const exploreBtn = document.getElementById('explore-btn');
+            if (exploreBtn) {
+                exploreBtn.addEventListener('click', function() {
+                    const solutionsContainer = document.getElementById('solutions-container');
+                    if (solutionsContainer) {
+                        solutionsContainer.classList.remove('hidden');
+                        solutionsContainer.classList.add('fade-in');
+                        solutionsContainer.scrollIntoView({ behavior: 'smooth' });
+                        
+                        // Show survey section after a delay
+                        setTimeout(function() {
+                            const surveyContainer = document.getElementById('survey-container');
+                            if (surveyContainer) {
+                                surveyContainer.classList.remove('hidden');
+                                surveyContainer.classList.add('fade-in');
+                            }
+                        }, 1000);
                     }
                 });
-            }, observerOptions);
-            
-            // Observe cards
-            document.querySelectorAll('.card').forEach(card => {
-                observer.observe(card);
+            }
+
+            // Modal functionality
+            const modals = document.querySelectorAll('.demo-modal');
+            const demoButtons = document.querySelectorAll('.demo-btn');
+            const closeButtons = document.querySelectorAll('.close');
+
+            demoButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.card');
+                    if (card) {
+                        const solution = card.dataset.solution;
+                        const modal = document.getElementById(solution + '-demo');
+                        if (modal) {
+                            modal.classList.add('show');
+                        }
+                    }
+                });
             });
+
+            closeButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const modal = this.closest('.demo-modal');
+                    if (modal) {
+                        modal.classList.remove('show');
+                    }
+                });
+            });
+
+            // Close modal on outside click
+            modals.forEach(function(modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.classList.remove('show');
+                    }
+                });
+            });
+
+            // Credit form functionality
+            const creditForm = document.getElementById('credit-form');
+            if (creditForm) {
+                creditForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const businessType = document.getElementById('business-type').value;
+                    const revenue = parseInt(document.getElementById('revenue').value) || 0;
+                    const employees = parseInt(document.getElementById('employees').value) || 0;
+                    
+                    // Simple credit scoring logic
+                    let loanAmount = Math.min(revenue * 3, 50000);
+                    let interestRate = 14;
+                    
+                    if (businessType === 'tourism') {
+                        loanAmount *= 1.2;
+                        interestRate -= 1;
+                    } else if (businessType === 'craft') {
+                        loanAmount *= 1.1;
+                    }
+                    
+                    if (employees > 2) {
+                        loanAmount *= 1.15;
+                        interestRate -= 0.5;
+                    }
+                    
+                    const loanAmountEl = document.getElementById('loan-amount');
+                    const loanRateEl = document.getElementById('loan-rate');
+                    const creditResult = document.getElementById('credit-result');
+                    
+                    if (loanAmountEl && loanRateEl && creditResult) {
+                        loanAmountEl.textContent = 'R' + Math.floor(loanAmount).toLocaleString();
+                        loanRateEl.textContent = interestRate.toFixed(1) + '%';
+                        creditResult.classList.remove('hidden');
+                    }
+                });
+            }
+
+            // How we decided button
+            const howBtn = document.getElementById('how-btn');
+            if (howBtn) {
+                howBtn.addEventListener('click', function() {
+                    alert('Our AI considers: Business type, revenue stability, growth potential, local market conditions, and social impact factors. Traditional banks only look at collateral and credit history.');
+                });
+            }
+
+            // WhatsApp demo functionality
+            const whatsappSend = document.getElementById('whatsapp-send');
+            const whatsappInput = document.getElementById('whatsapp-input');
+            const whatsappScreen = document.getElementById('whatsapp-screen');
+
+            function sendWhatsAppMessage() {
+                if (!whatsappInput || !whatsappScreen) return;
+                
+                const message = whatsappInput.value.trim().toUpperCase();
+                
+                if (message) {
+                    // Add user message
+                    const userMsg = document.createElement('div');
+                    userMsg.className = 'message sent';
+                    userMsg.textContent = message;
+                    whatsappScreen.appendChild(userMsg);
+                    
+                    // Add bot response
+                    setTimeout(function() {
+                        const botMsg = document.createElement('div');
+                        botMsg.className = 'message received';
+                        
+                        if (message.includes('LOAN')) {
+                            botMsg.textContent = 'You qualify for R8,500 loan at 16% APR. Reply YES to apply.';
+                        } else if (message.includes('RECEIPT')) {
+                            const amount = message.match(/\d+/);
+                            if (amount) {
+                                botMsg.textContent = 'Receipt recorded: R' + amount[0] + '. New balance: R' + (2450 + parseInt(amount[0]));
+                            } else {
+                                botMsg.textContent = 'Please specify amount: RECEIPT [amount]';
+                            }
+                        } else if (message.includes('BALANCE')) {
+                            botMsg.textContent = 'Balance: R2,450 | Weekly sales: R3,200 | Growth: +15%';
+                        } else {
+                            botMsg.textContent = 'Available commands: BALANCE, LOAN, RECEIPT [amount]';
+                        }
+                        
+                        whatsappScreen.appendChild(botMsg);
+                        whatsappScreen.scrollTop = whatsappScreen.scrollHeight;
+                    }, 500);
+                    
+                    whatsappInput.value = '';
+                    whatsappScreen.scrollTop = whatsappScreen.scrollHeight;
+                }
+            }
+
+            if (whatsappSend) {
+                whatsappSend.addEventListener('click', sendWhatsAppMessage);
+            }
+
+            // Enter key for WhatsApp input
+            if (whatsappInput) {
+                whatsappInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendWhatsAppMessage();
+                    }
+                });
+            }
+
+            // Survey form functionality
+            const pilotSurvey = document.getElementById('pilot-survey');
+            if (pilotSurvey) {
+                pilotSurvey.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Simulate form submission
+                    setTimeout(function() {
+                        const surveyForm = document.getElementById('pilot-survey');
+                        const surveyThankyou = document.getElementById('survey-thankyou');
+                        
+                        if (surveyForm && surveyThankyou) {
+                            surveyForm.classList.add('hidden');
+                            surveyThankyou.classList.remove('hidden');
+                            surveyThankyou.classList.add('fade-in');
+                        }
+                    }, 500);
+                });
+            }
+
+            // Intersection Observer for scroll animations
+            if ('IntersectionObserver' in window) {
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+                
+                const observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('fade-in');
+                        }
+                    });
+                }, observerOptions);
+                
+                // Observe cards
+                document.querySelectorAll('.card').forEach(function(card) {
+                    observer.observe(card);
+                });
+            }
         });
     </script>
 </body>

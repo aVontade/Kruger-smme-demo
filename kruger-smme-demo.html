@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kruger SMME Incubation Demo</title>
+    <style>
+        :root {
+            --wef-navy: #003366;
+            --wef-blue: #0066cc;
+            --wef-light-blue: #4d94ff;
+            --wef-gray: #f8f9fa;
+            --wef-dark-gray: #6c757d;
+            --wef-white: #ffffff;
+            --wef-red: #dc3545;
+            --wef-green: #28a745;
+            --wef-orange: #fd7e14;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--wef-navy);
+            background: linear-gradient(135deg, var(--wef-gray) 0%, var(--wef-white) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--wef-navy) 0%, var(--wef-blue) 100%);
+            color: var(--wef-white);
+            text-align: center;
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .chokepoint-ticker {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: 50px;
+            margin: 30px auto;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .chokepoint-ticker span {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--wef-orange);
+            text-shadow: 0 0 10px rgba(253, 126, 20, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .explore-btn {
+            background: linear-gradient(45deg, var(--wef-orange), var(--wef-red));
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(253, 126, 20, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .explore-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(253, 126, 20, 0.4);
+        }
+
+        /* Solutions Section */
+        .solutions-container {
+            padding: 80px 20px;
+            background: var(--wef-white);
+        }
+
+        .solutions-container h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--wef-navy);
+            position: relative;
+        }
+
+        .solutions-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(45deg, var(--wef-blue), var(--wef-light-blue));
+            border-radius: 2px;
+        }
+
+        .solution-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--wef-white);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 51, 102, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 102, 204, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 102, 204, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 51, 102, 0.15);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--wef-navy);
+        }
+
+        .card p {
+            font-size: 1.1rem;
+            color: var(--wef-dark-gray);
+            margin-bottom: 25px;
+        }
+
+        .demo-btn {
+            background: var(--wef-blue);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .demo-btn:hover {
+            background: var(--wef-light-blue);
+            transform: scale(1.05);
+        }
+
+        /* Modal Styles */
+        .demo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .demo-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--wef-white);
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .demo-modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--wef-dark-gray);
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: var(--wef-red);
+        }
+
+        /* Form Styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        select, input {
+            padding: 15px;
+            border: 2px solid var(--wef-gray);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--wef-blue);
+        }
+
+        button[type="submit"] {
+            background: var(--wef-blue);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background: var(--wef-light-blue);
+        }
+
+        /* Credit Result */
+        .credit-result {
+            background: linear-gradient(135deg, var(--wef-green), #20c997);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .credit-result p {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .how-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .how-btn:hover {
+            background: white;
+            color: var(--wef-green);
+        }
+
+        /* WhatsApp Demo */
+        .whatsapp-container {
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        .whatsapp-screen {
+            background: #e5ddd5;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .message.received {
+            background: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message.sent {
+            background: #dcf8c6;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .whatsapp-input {
+            display: flex;
+            background: white;
+            padding: 10px;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .whatsapp-input input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            border-radius: 20px;
+            background: #f0f0f0;
+            margin-right: 10px;
+        }
+
+        .whatsapp-input button {
+            background: var(--wef-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* Survey Section */
+        .survey-container {
+            background: linear-gradient(135deg, var(--wef-gray), var(--wef-white));
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .survey-container h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--wef-navy);
+        }
+
+        .survey-thankyou {
+            background: var(--wef-green);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 20px;
+            }
+            
+            .solutions-container {
+                padding: 60px 20px;
+            }
+            
+            .modal-content {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <h1>80% of Kruger SMMEs Fail Within 3 Years</h1>
+            <div class="chokepoint-ticker">
+                <span id="loan-rejections">4,920</span> loan rejections this month
+            </div>
+            <button class="explore-btn" id="explore-btn">Explore Solutions</button>
+        </div>
+    </div>
+
+    <!-- Solutions Section -->
+    <div class="solutions-container hidden" id="solutions-container">
+        <div class="container">
+            <h2>Our Solutions</h2>
+            <div class="solution-cards">
+                <div class="card" data-solution="credit">
+                    <h3>AI Credit Scoring</h3>
+                    <p>37-42% lower defaults through advanced risk assessment</p>
+                    <button class="demo-btn">Try Demo</button>
+                </div>
+                <div class="card" data-solution="whatsapp">
+                    <h3>WhatsApp Banking</h3>
+                    <p>Zero-data access for underserved communities</p>
+                    <button class="demo-btn">Try Demo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Credit Demo Modal -->
+    <div id="credit-demo" class="demo-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>AI Credit Assessment</h3>
+            <form id="credit-form">
+                <select id="business-type" aria-label="Select business type" required>
+                    <option value="">Select business type</option>
+                    <option value="tourism">Eco-Tourism</option>
+                    <option value="craft">Handicrafts</option>
+                    <option value="retail">Retail/Trading</option>
+                    <option value="services">Professional Services</option>
+                </select>
+                <input type="number" id="revenue" placeholder="Monthly revenue (R)" min="0" required>
+                <input type="number" id="employees" placeholder="Number of employees" min="0" required>
+                <button type="submit">Check Eligibility</button>
+            </form>
+            <div id="credit-result" class="credit-result hidden">
+                <p>✅ Approved for: <span id="loan-amount">R15,000</span> at <span id="loan-rate">14%</span> APR</p>
+                <button class="how-btn" id="how-btn">How we decided</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Demo Modal -->
+    <div id="whatsapp-demo" class="demo-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="whatsapp-container">
+                <div class="whatsapp-screen" id="whatsapp-screen">
+                    <div class="message received">Hi! Send BALANCE, LOAN, or RECEIPT [amount]</div>
+                    <div class="message sent">BALANCE</div>
+                    <div class="message received">Balance: R2,450 | Last sale: R500 (Safari tour)</div>
+                </div>
+                <div class="whatsapp-input">
+                    <input type="text" id="whatsapp-input" placeholder="Type message...">
+                    <button id="whatsapp-send">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Survey Section -->
+    <div class="survey-container hidden" id="survey-container">
+        <div class="container">
+            <h2>Join Our 2025 Pilot</h2>
+            <form id="pilot-survey">
+                <select id="survey-business-type" aria-label="Select your business type" required>
+                    <option value="">Select your business</option>
+                    <option value="tourism">Eco-Tourism</option>
+                    <option value="craft">Handicrafts</option>
+                    <option value="retail">Retail/Trading</option>
+                    <option value="services">Professional Services</option>
+                    <option value="agriculture">Agriculture</option>
+                </select>
+                <input type="tel" id="whatsapp-number" placeholder="WhatsApp Number (+27...)" required>
+                <input type="email" id="email" placeholder="Email address" required>
+                <button type="submit">Get Updates</button>
+            </form>
+            <div id="survey-thankyou" class="survey-thankyou hidden">
+                <p>🎉 Thank you! We'll contact you soon with pilot program details.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Counter animation
+        function animateCounter() {
+            const counter = document.getElementById('loan-rejections');
+            const target = 4920;
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                counter.textContent = Math.floor(current).toLocaleString();
+            }, 20);
+        }
+
+        // Initialize counter animation
+        animateCounter();
+
+        // Explore button functionality
+        document.getElementById('explore-btn').addEventListener('click', function() {
+            const solutionsContainer = document.getElementById('solutions-container');
+            solutionsContainer.classList.remove('hidden');
+            solutionsContainer.classList.add('fade-in');
+            solutionsContainer.scrollIntoView({ behavior: 'smooth' });
+            
+            // Show survey section after a delay
+            setTimeout(() => {
+                const surveyContainer = document.getElementById('survey-container');
+                surveyContainer.classList.remove('hidden');
+                surveyContainer.classList.add('fade-in');
+            }, 1000);
+        });
+
+        // Modal functionality
+        const modals = document.querySelectorAll('.demo-modal');
+        const demoButtons = document.querySelectorAll('.demo-btn');
+        const closeButtons = document.querySelectorAll('.close');
+
+        demoButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.card');
+                const solution = card.dataset.solution;
+                const modal = document.getElementById(`${solution}-demo`);
+                modal.classList.add('show');
+            });
+        });
+
+        closeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const modal = this.closest('.demo-modal');
+                modal.classList.remove('show');
+            });
+        });
+
+        // Close modal on outside click
+        modals.forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+        });
+
+        // Credit form functionality
+        document.getElementById('credit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const businessType = document.getElementById('business-type').value;
+            const revenue = parseInt(document.getElementById('revenue').value);
+            const employees = parseInt(document.getElementById('employees').value);
+            
+            // Simple credit scoring logic
+            let loanAmount = Math.min(revenue * 3, 50000);
+            let interestRate = 14;
+            
+            if (businessType === 'tourism') {
+                loanAmount *= 1.2;
+                interestRate -= 1;
+            } else if (businessType === 'craft') {
+                loanAmount *= 1.1;
+            }
+            
+            if (employees > 2) {
+                loanAmount *= 1.15;
+                interestRate -= 0.5;
+            }
+            
+            document.getElementById('loan-amount').textContent = `R${Math.floor(loanAmount).toLocaleString()}`;
+            document.getElementById('loan-rate').textContent = `${interestRate.toFixed(1)}%`;
+            document.getElementById('credit-result').classList.remove('hidden');
+        });
+
+        // How we decided button
+        document.getElementById('how-btn').addEventListener('click', function() {
+            alert('Our AI considers: Business type, revenue stability, growth potential, local market conditions, and social impact factors. Traditional banks only look at collateral and credit history.');
+        });
+
+        // WhatsApp demo functionality
+        document.getElementById('whatsapp-send').addEventListener('click', function() {
+            const input = document.getElementById('whatsapp-input');
+            const message = input.value.trim().toUpperCase();
+            const screen = document.getElementById('whatsapp-screen');
+            
+            if (message) {
+                // Add user message
+                const userMsg = document.createElement('div');
+                userMsg.className = 'message sent';
+                userMsg.textContent = message;
+                screen.appendChild(userMsg);
+                
+                // Add bot response
+                setTimeout(() => {
+                    const botMsg = document.createElement('div');
+                    botMsg.className = 'message received';
+                    
+                    if (message.includes('LOAN')) {
+                        botMsg.textContent = 'You qualify for R8,500 loan at 16% APR. Reply YES to apply.';
+                    } else if (message.includes('RECEIPT')) {
+                        const amount = message.match(/\d+/);
+                        if (amount) {
+                            botMsg.textContent = `Receipt recorded: R${amount[0]}. New balance: R${2450 + parseInt(amount[0])}`;
+                        } else {
+                            botMsg.textContent = 'Please specify amount: RECEIPT [amount]';
+                        }
+                    } else if (message.includes('BALANCE')) {
+                        botMsg.textContent = 'Balance: R2,450 | Weekly sales: R3,200 | Growth: +15%';
+                    } else {
+                        botMsg.textContent = 'Available commands: BALANCE, LOAN, RECEIPT [amount]';
+                    }
+                    
+                    screen.appendChild(botMsg);
+                    screen.scrollTop = screen.scrollHeight;
+                }, 500);
+                
+                input.value = '';
+                screen.scrollTop = screen.scrollHeight;
+            }
+        });
+
+        // Enter key for WhatsApp input
+        document.getElementById('whatsapp-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('whatsapp-send').click();
+            }
+        });
+
+        // Survey form functionality
+        document.getElementById('pilot-survey').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const businessType = document.getElementById('survey-business-type').value;
+            const whatsappNumber = document.getElementById('whatsapp-number').value;
+            const email = document.getElementById('email').value;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                document.getElementById('pilot-survey').classList.add('hidden');
+                document.getElementById('survey-thankyou').classList.remove('hidden');
+                document.getElementById('survey-thankyou').classList.add('fade-in');
+            }, 500);
+        });
+
+        // Add some dynamic effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate cards on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe cards
+            document.querySelectorAll('.card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
